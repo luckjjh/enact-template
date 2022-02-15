@@ -1,6 +1,7 @@
 import {useCallback, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 
+import * as domEvents from '../constants/domEvents';
 import * as keyCode from '../constants/keyCode';
 import debugLog from '../libs/log';
 import {useConfigs} from '../hooks/configs';
@@ -92,22 +93,22 @@ export const useCloseHandler = () => {
 
 // Add all document events here
 export const useDocumentEvent = (setSkinVariants, parseLaunchParams) => {
-	// Variables should be exactly same names as document events
-	const keyup = useKeyUpHandler();
-	const screenOrientationChange = useScreenOrientationChangeHandler();
-	const visibilitychange = useVisibleChangeHandler();
-	const webOSHighContrastChange = useHighContrastChangeHandler(setSkinVariants);
-	const webOSLocaleChange = useLocaleChangeHandler();
-	const webOSRelaunch = useRelaunchHandler(parseLaunchParams);
+	const handleKeyup = useKeyUpHandler();
+	const handleScreenOrientationChange = useScreenOrientationChangeHandler();
+	const handleVisibilitychange = useVisibleChangeHandler();
+	const handleHighContrastChange =
+		useHighContrastChangeHandler(setSkinVariants);
+	const handleLocaleChange = useLocaleChangeHandler();
+	const handleRelaunch = useRelaunchHandler(parseLaunchParams);
 
 	useEffect(() => {
 		const events = {
-			keyup,
-			screenOrientationChange,
-			visibilitychange,
-			webOSHighContrastChange,
-			webOSLocaleChange,
-			webOSRelaunch
+			[domEvents.KEY_UP]: handleKeyup,
+			[domEvents.SCREEN_ORIENTATION_CHANGE]: handleScreenOrientationChange,
+			[domEvents.VISIBILITY_CHANGE]: handleVisibilitychange,
+			[domEvents.WEBOS_HIHG_CONTRAST_CHANGE]: handleHighContrastChange,
+			[domEvents.WEBOS_LOCALE_CHANGE]: handleLocaleChange,
+			[domEvents.WEBOS_RELAUNCH]: handleRelaunch
 		};
 
 		if (isTVBrowser()) {
@@ -124,12 +125,12 @@ export const useDocumentEvent = (setSkinVariants, parseLaunchParams) => {
 			}
 		};
 	}, [
-		keyup,
-		screenOrientationChange,
-		visibilitychange,
-		webOSHighContrastChange,
-		webOSLocaleChange,
-		webOSRelaunch
+		handleKeyup,
+		handleScreenOrientationChange,
+		handleVisibilitychange,
+		handleHighContrastChange,
+		handleLocaleChange,
+		handleRelaunch
 	]);
 };
 

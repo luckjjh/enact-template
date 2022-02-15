@@ -5,7 +5,8 @@ export const useMainStrings = () => {
 	return useMemo(() => {
 		return {
 			main: $L('This is a main page of sample application.'),
-			next: $L('Next')
+			ok: $L('OK'),
+			alert: $L('This is an alert message.')
 		};
 	}, []);
 };

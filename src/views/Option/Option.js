@@ -7,10 +7,10 @@ import FixedPopupPanels, {
 } from '@enact/sandstone/FixedPopupPanels';
 import Item from '@enact/sandstone/Item';
 
+import debugLog from '../../libs/log';
 import {useLaunchUserGuide} from './OptionState';
 import {openOptionMenu} from '../../reducers/general';
 import {useOptionStrings} from '../../strings/option';
-import debugLog from '../../libs/log';
 import {closeApp} from '../../libs/utils';
 
 const Option = () => {
@@ -35,7 +35,7 @@ const Option = () => {
 	return (
 		<FixedPopupPanels open={isOptionMenuOpen} onClose={handleClose}>
 			<Panel>
-				<Header title={strings.options} />
+				<Header title={strings.options} noCloseButton />
 				<Item key={strings.options} onClick={handleUserGuideClick}>
 					{strings.userguide}
 				</Item>

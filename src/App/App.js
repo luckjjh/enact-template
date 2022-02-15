@@ -5,7 +5,6 @@ import ThemeDecorator from '@enact/sandstone/ThemeDecorator';
 import Panels from '@enact/sandstone/Panels';
 
 import Main from '../views/Main';
-import Sub from '../views/Sub';
 import {
 	useBackHandler,
 	useCloseHandler,
@@ -30,10 +29,6 @@ if (isDevServe()) {
 const draw = panel => {
 	switch (panel) {
 		case 'main':
-			return <Main key={panel} />;
-		case 'sub':
-			return <Sub key={panel} />;
-		default:
 			return <Main key={panel} />;
 	}
 };

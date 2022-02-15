@@ -1,6 +1,6 @@
-import {useCallback} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
+import Alert from '@enact/sandstone/Alert';
 import BodyText from '@enact/sandstone/BodyText';
 import Button from '@enact/sandstone/Button';
 import {Header, Panel} from '@enact/sandstone/Panels';
@@ -8,26 +8,19 @@ import {Header, Panel} from '@enact/sandstone/Panels';
 import Buttons from '../../components/Buttons';
 import Option from '../Option';
 
-import debugLog from '../../libs/log';
-import {useMainState} from './MainState';
+import {usePopup, useText} from './MainState';
 import {useCommonStrings} from '../../strings/common';
 import {useMainStrings} from '../../strings/main';
 
 import css from './Main.module.less';
-import {pushPanel} from '../../reducers/panel';
 
 const Main = props => {
-	const dispatch = useDispatch();
+	const {isPopupOpen, handlePopupOpen, handlePopupClose} = usePopup();
 	const common = useCommonStrings();
 	const main = useMainStrings();
 
-	const text = useMainState();
+	const text = useText();
 	const type = useSelector(state => state.config.type);
-
-	const handleNextClick = useCallback(() => {
-		debugLog('CLICK_NEXT', {});
-		dispatch(pushPanel('sub'));
-	}, [dispatch]);
 
 	return (
 		<Panel {...props}>
@@ -36,9 +29,21 @@ const Main = props => {
 			<BodyText>{main.main}</BodyText>
 			<BodyText>Text: {text}</BodyText>
 			<BodyText>Type: {type}</BodyText>
-			<Button onClick={handleNextClick} size="small" className={css.buttonCell}>
-				{main.next}
+			<Button onClick={handlePopupOpen} size="small" className={css.buttonCell}>
+				{main.ok}
 			</Button>
+			<Alert type="overlay" open={isPopupOpen} onClose={handlePopupClose}>
+				<span>{main.alert}</span>
+				<buttons>
+					<Button
+						size="small"
+						className={css.buttonCell}
+						onClick={handlePopupClose}
+					>
+						{main.ok}
+					</Button>
+				</buttons>
+			</Alert>
 		</Panel>
 	);
 };

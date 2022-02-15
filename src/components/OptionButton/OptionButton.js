@@ -1,9 +1,27 @@
-import {memo} from 'react';
+import {memo, useCallback} from 'react';
+import {useDispatch} from 'react-redux';
 
 import Button from '@enact/sandstone/Button';
 
+import {openOptionMenu} from '../../reducers/general';
+import {useOptionStrings} from '../../strings/option';
+
 const OptionButton = props => {
-	return <Button {...props} size="small" icon="verticalellipsis" />;
+	const dispatch = useDispatch();
+	const strings = useOptionStrings();
+	const handleOptionsClick = useCallback(() => {
+		dispatch(openOptionMenu(true));
+	}, [dispatch]);
+
+	return (
+		<Button
+			{...props}
+			aria-label={strings.options}
+			size="small"
+			icon="verticalellipsis"
+			onClick={handleOptionsClick}
+		/>
+	);
 };
 
 export default memo(OptionButton);
