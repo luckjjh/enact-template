@@ -1,5 +1,6 @@
 jest.mock('../libs/log');
 
+import '@testing-library/jest-dom';
 import {defineFeature, loadFeature} from 'jest-cucumber';
 import {act, fireEvent, screen, waitFor} from '@testing-library/react';
 
@@ -16,40 +17,52 @@ beforeEach(() => {
 	};
 });
 
+afterEach(() => {
+	debugLog.mockRestore();
+});
+
 defineFeature(feature, run => {
-	run('Launch the app.', ({when, then}) => {
+	run('Launch the app', ({when, then}) => {
 		when('The app is launched.', async () => {
 			await launch();
 		});
 		then('App is displayed well.', () => {
-			expect(window.webOSSystem.setWindowOrientation).toBeCalled();
+			const item = screen.queryByText(/enact template/i);
+			expect(item).not.toBeNull();
+		});
+	});
+
+	run('Close the app', ({when, then}) => {
+		when('User clicks X button.', async () => {
+			await launch();
+			const x = screen.queryByLabelText(/exit app/i);
+			fireEvent.click(x);
+		});
+		then('The app is closed.', () => {
+			expect(window.webOSSystem.close).toBeCalled();
 		});
 	});
 });
 
 describe('The app handles document events.', () => {
-	test('Logs error when parsing wrong launch parameters.', async () => {
+	test("Doesn't update launch parameters when parsing wrong value.", async () => {
 		window.webOSSystem.launchParams = '{a:1}';
-		await launch();
-		await waitFor(() => {
-			expect(debugLog).toBeCalledWith('LAUNCH_PARAMS[F]', {
-				launchParams: '{a:1}'
-			});
-		});
+		const {store} = await launch();
+		expect(store.getState().general.launchParams).toEqual({});
 	});
 
 	test('Parses launch parameters when relaunched.', async () => {
-		window.PalmSystem.launchParams = '{"a":1}';
+		window.webOSSystem.launchParams = '{"a":1}';
 		const {store} = await launch();
 		expect(store.getState().general.launchParams).toEqual({a: 1});
-		window.PalmSystem.launchParams = '{"a":2}';
+		window.webOSSystem.launchParams = '{"a":2}';
 		/* eslint-disable-next-line no-undef */
 		const event = new CustomEvent('webOSRelaunch');
 		await act(async () => {
 			await document.dispatchEvent(event);
 		});
 		await waitFor(() => {
-			expect(store.getState().general.launchParams).toBe({a: 2});
+			expect(store.getState().general.launchParams).toEqual({a: 2});
 		});
 	});
 
@@ -73,11 +86,11 @@ describe('The app handles document events.', () => {
 	});
 
 	test('The app handles high contrast change event.', async () => {
-		window.PalmSystem.highContrast = 'off';
+		window.webOSSystem.highContrast = 'off';
 		await launch();
 		let root = screen.queryByTestId('root');
 		expect(root).not.toHaveClass('highContrast');
-		window.PalmSystem.highContrast = 'on';
+		window.webOSSystem.highContrast = 'on';
 		/* eslint-disable-next-line no-undef */
 		const event = new CustomEvent('webOSHighContrastChange');
 		await act(async () => {
@@ -93,5 +106,19 @@ describe('The app handles document events.', () => {
 		expect(store.getState().general.isOptionMenuOpen).toBeTruthy();
 		fireEvent.keyUp(document, {keyCode: 27});
 		expect(store.getState().general.isOptionMenuOpen).toBeFalsy();
+	});
+
+	test('The app handles screen orientation change.', async () => {
+		await launch();
+		/* eslint-disable-next-line no-undef */
+		const event = new CustomEvent('screenOrientationChange', {
+			detail: {
+				screenOrientation: 'portrait'
+			}
+		});
+		await act(async () => {
+			await document.dispatchEvent(event);
+		});
+		expect(window.webOSSystem.setWindowOrientation).toBeCalledWith('portrait');
 	});
 });

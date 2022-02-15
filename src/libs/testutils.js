@@ -14,14 +14,18 @@ const getConfiguredStore = preloadedState =>
 		preloadedState
 	});
 
+// For cucumber APIs
+export const pushBackButton = fn => {
+	fn('User pushes back button on remote control.', () => {
+		fireEvent.keyUp(window, {keyCode: 461});
+	});
+};
+
 export const renderWithRedux = async (
 	ui,
-	{
-		initialState = {},
-		store = getConfiguredStore(initialState),
-		floating = false
-	} = {}
+	{initialState = {}, floating = false}
 ) => {
+	const store = getConfiguredStore(initialState);
 	const FloatingLayer = FloatingLayerDecorator('div');
 	let newUI = ui;
 	if (floating) {
@@ -34,15 +38,8 @@ export const renderWithRedux = async (
 	return {...results, store};
 };
 
-export const launch = (floating = false) => {
-	return renderWithRedux(<App />, {floating});
-};
-
-// For cucumber APIs
-export const pushBackButton = fn => {
-	fn('User pushes back button on remote control', () => {
-		fireEvent.keyUp(window, {keyCode: 461});
-	});
+const launch = (params = {}) => {
+	return renderWithRedux(<App />, params);
 };
 
 export default launch;
