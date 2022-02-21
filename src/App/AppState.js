@@ -154,7 +154,7 @@ export const useLaunchParams = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (isTVBrowser) {
+		if (isTVBrowser()) {
 			parseLaunchParams();
 		}
 	}, [parseLaunchParams]);
