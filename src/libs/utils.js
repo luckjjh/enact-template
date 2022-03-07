@@ -26,19 +26,9 @@ export const reload = () => {
 	}
 };
 
-export const getZoomRate = zoom => {
-	let {value, min} = zoom;
-
-	if (zoom.step === 1) {
-		value *= 10;
-	}
-
-	return value + (min === 0 ? 100 : 0);
-};
-
 export const getAppId = () => {
 	if (isTVBrowser()) {
 		return window.webOSSystem.getIdentifier();
 	}
-	return 'com.webos.app.camera';
+	return 'com.webos.app.enact-template';
 };
