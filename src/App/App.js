@@ -1,12 +1,14 @@
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
 
+import Cancelable from '@enact/ui/Cancelable';
 import ThemeDecorator from '@enact/sandstone/ThemeDecorator';
 import Panels from '@enact/sandstone/Panels';
 
 import Main from '../views/Main';
 import {
 	useBackHandler,
+	useCancelHandler,
 	useCloseHandler,
 	useDocumentEvent,
 	useLaunchParams,
@@ -26,6 +28,11 @@ if (isDevServe()) {
 	};
 }
 
+const CancelablePanels = Cancelable(
+	{modal: 'true', onCancel: 'onCancel'},
+	Panels
+);
+
 const draw = panel => {
 	switch (panel) {
 		case 'main':
@@ -39,21 +46,23 @@ const App = props => {
 	const index = useSelector(state => state.panel.index);
 	const parseLaunchParams = useLaunchParams();
 	const handleBack = useBackHandler();
+	const handleCancel = useCancelHandler();
 	const handleClose = useCloseHandler();
 	useDocumentEvent(setSkinVariants, parseLaunchParams);
 	useSubscriptions();
 
 	return (
-		<Panels
+		<CancelablePanels
 			{...props}
 			skinVariants={skinVariants}
 			data-testid="root"
 			index={index}
 			onBack={handleBack}
+			onCancel={handleCancel}
 			onClose={handleClose}
 		>
 			{panels.map(draw)}
-		</Panels>
+		</CancelablePanels>
 	);
 };
 

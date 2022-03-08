@@ -5,7 +5,7 @@ import {defineFeature, loadFeature} from 'jest-cucumber';
 import {act, fireEvent, screen, waitFor} from '@testing-library/react';
 
 import debugLog from '../libs/log';
-import launch from '../libs/testutils';
+import launch, {launchApp, pushBackButton} from '../libs/testutils';
 
 const feature = loadFeature('./src/App/App.feature');
 
@@ -13,6 +13,7 @@ beforeEach(() => {
 	window.webOSSystem = {
 		PmLogString: jest.fn(),
 		close: jest.fn(),
+		platformBack: jest.fn(),
 		setWindowOrientation: jest.fn()
 	};
 });
@@ -22,24 +23,30 @@ afterEach(() => {
 });
 
 defineFeature(feature, run => {
-	run('Launch the app', ({when, then}) => {
-		when('The app is launched.', async () => {
-			await launch();
-		});
+	run('Launch the app', ({given, then}) => {
+		launchApp(given);
 		then('App is displayed well.', () => {
 			const item = screen.queryByText(/enact template/i);
 			expect(item).not.toBeNull();
 		});
 	});
 
-	run('Close the app', ({when, then}) => {
+	run('Close the app', ({given, when, then}) => {
+		launchApp(given);
 		when('User clicks X button.', async () => {
-			await launch();
 			const x = screen.queryByLabelText(/exit app/i);
 			fireEvent.click(x);
 		});
 		then('The app is closed.', () => {
 			expect(window.webOSSystem.close).toBeCalled();
+		});
+	});
+
+	run('Close the app by back key', ({given, when, then}) => {
+		launchApp(given);
+		pushBackButton(when);
+		then('The app is closed.', () => {
+			expect(window.webOSSystem.platformBack).toBeCalled();
 		});
 	});
 });
@@ -120,5 +127,17 @@ describe('The app handles document events.', () => {
 			await document.dispatchEvent(event);
 		});
 		expect(window.webOSSystem.setWindowOrientation).toBeCalledWith('portrait');
+	});
+
+	test('The app handles visibility change.', async () => {
+		const {store} = await launch();
+		const before = store.getState().general.isForeground;
+		Object.defineProperty(window.document, 'hidden', {
+			writable: true,
+			value: true
+		});
+		document.dispatchEvent(new window.Event('visibilitychange'));
+		const after = store.getState().general.isForeground;
+		expect(before).not.toBe(after);
 	});
 });

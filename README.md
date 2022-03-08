@@ -10,6 +10,8 @@ Enact system application template for new developers
 1. Add origin to your remote `git remote add origin ${YOUR_APP_REPOSITORY}`.
 1. Modify codes.
 
+> If you want to use typescript version, you have to install typescript globally.
+
 ## How to update
 
 ### What can we discuss?
@@ -26,4 +28,4 @@ Enact system application template for new developers
 
 ### How do we discuss?
 
-Please make an issue and let's talk.
+Please make issues and let's talk.
