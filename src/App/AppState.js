@@ -84,6 +84,13 @@ export const useBackHandler = () => {
 	}, [dispatch]);
 };
 
+export const useCancelHandler = () => {
+	return useCallback(() => {
+		debugLog('CLOSE_BACK', {});
+		closeApp(true);
+	}, []);
+};
+
 export const useCloseHandler = () => {
 	return useCallback(() => {
 		debugLog('CLOSE_X[I]', {});
@@ -106,7 +113,7 @@ export const useDocumentEvent = (setSkinVariants, parseLaunchParams) => {
 			[domEvents.KEY_UP]: handleKeyup,
 			[domEvents.SCREEN_ORIENTATION_CHANGE]: handleScreenOrientationChange,
 			[domEvents.VISIBILITY_CHANGE]: handleVisibilitychange,
-			[domEvents.WEBOS_HIHG_CONTRAST_CHANGE]: handleHighContrastChange,
+			[domEvents.WEBOS_HIGH_CONTRAST_CHANGE]: handleHighContrastChange,
 			[domEvents.WEBOS_LOCALE_CHANGE]: handleLocaleChange,
 			[domEvents.WEBOS_RELAUNCH]: handleRelaunch
 		};

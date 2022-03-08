@@ -14,13 +14,6 @@ const getConfiguredStore = preloadedState =>
 		preloadedState
 	});
 
-// For cucumber APIs
-export const pushBackButton = fn => {
-	fn('User pushes back button on remote control.', () => {
-		fireEvent.keyUp(window, {keyCode: 461});
-	});
-};
-
 export const renderWithRedux = async (
 	ui,
 	{initialState = {}, floating = false}
@@ -40,6 +33,19 @@ export const renderWithRedux = async (
 
 const launch = (params = {}) => {
 	return renderWithRedux(<App />, params);
+};
+
+// For cucumber APIs
+export const launchApp = (fn, floating = false) => {
+	fn('User launches the app.', async () => {
+		await launch(floating);
+	});
+};
+
+export const pushBackButton = fn => {
+	fn('User pushes back button on remote control.', () => {
+		fireEvent.keyUp(window, {keyCode: 461});
+	});
 };
 
 export default launch;
