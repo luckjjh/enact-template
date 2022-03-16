@@ -29,3 +29,9 @@ Enact system application template for new developers
 ### How do we discuss?
 
 Please make issues and let's talk.
+
+## Others
+
+### How to lint in VS Code
+
+You need to install eslint globally. Please refer [this page](https://github.com/enactjs/eslint-config-enact/blob/master/docs/index.md).
