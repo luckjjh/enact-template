@@ -27,17 +27,17 @@ defineFeature(feature, run => {
 	});
 
 	run('Open alert', ({when, then, and}) => {
-		when('User clicks OK button.', async () => {
+		when('User clicks Open button.', async () => {
 			await launch();
-			const ok = screen.queryByText(/ok/i);
+			const ok = screen.queryByText(/open/i);
 			fireEvent.click(ok);
 		});
 		then('The alert is shown.', async () => {
 			const message = await screen.findByText(/alert message/i);
 			expect(message).not.toBeNull();
 		});
-		and('User clicks any button.', async () => {
-			const [, ok] = await screen.findAllByText(/ok/i);
+		and('User clicks OK button.', async () => {
+			const ok = await screen.findByText(/ok/i);
 			fireEvent.click(ok);
 		});
 		then('The alert disappears.', () => {

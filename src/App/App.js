@@ -6,6 +6,7 @@ import ThemeDecorator from '@enact/sandstone/ThemeDecorator';
 import Panels from '@enact/sandstone/Panels';
 
 import Main from '../views/Main';
+import Sub from '../views/Sub';
 import {
 	useBackHandler,
 	useCancelHandler,
@@ -37,6 +38,8 @@ const draw = panel => {
 	switch (panel) {
 		case 'main':
 			return <Main key={panel} />;
+		case 'sub':
+			return <Sub key={panel} />;
 	}
 };
 
@@ -54,6 +57,7 @@ const App = props => {
 	return (
 		<CancelablePanels
 			{...props}
+			noAnimation={process.env.NODE_ENV === 'test'}
 			skinVariants={skinVariants}
 			data-testid="root"
 			index={index}

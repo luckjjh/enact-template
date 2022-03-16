@@ -1,6 +1,6 @@
 import {Provider} from 'react-redux';
 import {configureStore} from '@reduxjs/toolkit';
-import {act, render, fireEvent} from '@testing-library/react';
+import {act, render, fireEvent, screen} from '@testing-library/react';
 
 import {FloatingLayerDecorator} from '@enact/ui/FloatingLayer';
 
@@ -45,6 +45,14 @@ export const launchApp = (fn, floating = false) => {
 export const pushBackButton = fn => {
 	fn('User pushes back button on remote control.', () => {
 		fireEvent.keyUp(window, {keyCode: 461});
+	});
+};
+
+export const displayPageWell = (fn, page) => {
+	fn(`The ${page} page is displayed well.`, () => {
+		const text = new RegExp(page, 'i');
+		const item = screen.queryByText(text);
+		expect(item).not.toBeNull();
 	});
 };
 
