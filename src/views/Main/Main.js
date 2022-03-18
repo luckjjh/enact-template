@@ -8,13 +8,14 @@ import {Header, Panel} from '@enact/sandstone/Panels';
 import Buttons from '../../components/Buttons';
 import Option from '../Option';
 
-import {usePopup, useText} from './MainState';
+import {useNext, usePopup, useText} from './MainState';
 import {useCommonStrings} from '../../strings/common';
 import {useMainStrings} from '../../strings/main';
 
 import css from './Main.module.less';
 
 const Main = props => {
+	const handleNext = useNext();
 	const {isPopupOpen, handlePopupOpen, handlePopupClose} = usePopup();
 	const common = useCommonStrings();
 	const main = useMainStrings();
@@ -30,7 +31,10 @@ const Main = props => {
 			<BodyText>Text: {text}</BodyText>
 			<BodyText>Type: {type}</BodyText>
 			<Button onClick={handlePopupOpen} size="small" className={css.buttonCell}>
-				{main.ok}
+				{main.open}
+			</Button>
+			<Button onClick={handleNext} size="small" className={css.buttonCell}>
+				{main.next}
 			</Button>
 			<Alert type="overlay" open={isPopupOpen} onClose={handlePopupClose}>
 				<span>{main.alert}</span>

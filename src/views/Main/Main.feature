@@ -4,9 +4,9 @@ Feature: Main
 		Then The page shows texts well.
 
 	Scenario: Open alert
-		When User clicks OK button.
+		When User clicks Open button.
 		Then The alert is shown.
-		And User clicks any button.
+		And User clicks OK button.
 		Then The alert disappears.
 
 	Scenario: Open option menu
