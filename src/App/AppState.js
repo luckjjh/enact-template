@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 
 import * as domEvents from '../constants/domEvents';
@@ -24,19 +24,26 @@ const useVisibleChangeHandler = () => {
 };
 
 const useScreenOrientationChangeHandler = () => {
-	useEffect(() => {
-		if (isTVBrowser()) {
-			window.webOSSystem.setWindowOrientation(
-				window.webOSSystem.screenOrientation ?? 'landscape'
-			);
-		}
-	}, []);
+	const setScreenOrientation = useCallback(
+		(screenOrientation = 'landscape') => {
+			if (isTVBrowser()) {
+				debugLog('ORIENTATION_CHANGE', {screenOrientation});
+				window.webOSSystem.setWindowOrientation(screenOrientation);
+			}
+		},
+		[]
+	);
 
-	return useCallback(e => {
-		const orientation = e.detail.screenOrientation ?? 'landscape';
-		debugLog('ORIENTATION_CHANGE', {orientation});
-		window.webOSSystem.setWindowOrientation(orientation);
-	}, []);
+	useEffect(() => {
+		setScreenOrientation(window.webOSSystem.screenOrientation);
+	}, [setScreenOrientation]);
+
+	return useCallback(
+		e => {
+			setScreenOrientation(e.detail.screenOrientation);
+		},
+		[setScreenOrientation]
+	);
 };
 
 const useRelaunchHandler = parseLaunchParams => {
@@ -53,15 +60,6 @@ const useLocaleChangeHandler = () => {
 	}, []);
 };
 
-const useHighContrastChangeHandler = setSkinVariants => {
-	return useCallback(() => {
-		debugLog('HIGH_CONTRAST_CHANGE', {});
-		setSkinVariants({
-			highContrast: window.webOSSystem.highContrast === 'on'
-		});
-	}, [setSkinVariants]);
-};
-
 const useKeyUpHandler = () => {
 	const dispatch = useDispatch();
 
@@ -73,6 +71,53 @@ const useKeyUpHandler = () => {
 		},
 		[dispatch]
 	);
+};
+
+const useHighContrastChangeHandler = () => {
+	const [skinVariants, setSkinVariants] = useState({highContrast: false});
+
+	const handleHighContrastChange = useCallback(() => {
+		if (isTVBrowser()) {
+			debugLog('HIGH_CONTRAST_CHANGE', {});
+			setSkinVariants({
+				highContrast: window.webOSSystem.highContrast === 'on'
+			});
+		}
+	}, []);
+
+	useEffect(() => {
+		handleHighContrastChange();
+	}, [handleHighContrastChange]);
+
+	return [skinVariants, handleHighContrastChange];
+};
+
+const useLaunchParams = () => {
+	const dispatch = useDispatch();
+
+	const parseLaunchParams = useCallback(() => {
+		if (isTVBrowser()) {
+			let {launchParams} = window.webOSSystem;
+
+			if (!launchParams) {
+				launchParams = '{}';
+			}
+
+			try {
+				const parsed = JSON.parse(launchParams);
+				debugLog('LAUNCH_PARAMS[S]', parsed);
+				dispatch(setLaunchParams(parsed));
+			} catch (e) {
+				debugLog('LAUNCH_PARAMS[F]');
+			}
+		}
+	}, [dispatch]);
+
+	useEffect(() => {
+		parseLaunchParams();
+	}, [parseLaunchParams]);
+
+	return parseLaunchParams;
 };
 
 export const useBackHandler = () => {
@@ -99,13 +144,14 @@ export const useCloseHandler = () => {
 };
 
 // Add all document events here
-export const useDocumentEvent = (setSkinVariants, parseLaunchParams) => {
+export const useDocumentEvent = () => {
+	const parseLaunchParams = useLaunchParams();
 	const handleKeyup = useKeyUpHandler();
 	const handleScreenOrientationChange = useScreenOrientationChangeHandler();
 	const handleVisibilitychange = useVisibleChangeHandler();
-	const handleHighContrastChange =
-		useHighContrastChangeHandler(setSkinVariants);
 	const handleLocaleChange = useLocaleChangeHandler();
+	const [skinVariants, handleHighContrastChange] =
+		useHighContrastChangeHandler();
 	const handleRelaunch = useRelaunchHandler(parseLaunchParams);
 
 	useEffect(() => {
@@ -139,34 +185,8 @@ export const useDocumentEvent = (setSkinVariants, parseLaunchParams) => {
 		handleLocaleChange,
 		handleRelaunch
 	]);
-};
 
-export const useLaunchParams = () => {
-	const dispatch = useDispatch();
-
-	const parseLaunchParams = useCallback(() => {
-		let {launchParams} = window.webOSSystem;
-
-		if (!launchParams) {
-			launchParams = '{}';
-		}
-
-		try {
-			const parsed = JSON.parse(launchParams);
-			debugLog('LAUNCH_PARAMS[S]', parsed);
-			dispatch(setLaunchParams(parsed));
-		} catch (e) {
-			debugLog('LAUNCH_PARAMS[F]');
-		}
-	}, [dispatch]);
-
-	useEffect(() => {
-		if (isTVBrowser()) {
-			parseLaunchParams();
-		}
-	}, [parseLaunchParams]);
-
-	return parseLaunchParams;
+	return {skinVariants};
 };
 
 // Add functions to subscribe luna APIs for general usage here

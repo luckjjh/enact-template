@@ -24,7 +24,7 @@ defineFeature(feature, run => {
 			fireEvent.click(item);
 		});
 
-		displayPageWell(then, 'sub');
+		displayPageWell(then, 'sub', expect);
 	});
 
 	run('Go back to main with back icon', ({given, when, then}) => {
@@ -39,7 +39,7 @@ defineFeature(feature, run => {
 			fireEvent.click(item);
 		});
 
-		displayPageWell(then, 'main');
+		displayPageWell(then, 'main', expect);
 	});
 
 	run('Go back to main with back button', ({given, when, then}) => {
@@ -51,6 +51,6 @@ defineFeature(feature, run => {
 
 		pushBackButton(when);
 
-		displayPageWell(then, 'main');
+		displayPageWell(then, 'main', expect);
 	});
 });

@@ -48,7 +48,7 @@ export const pushBackButton = fn => {
 	});
 };
 
-export const displayPageWell = (fn, page) => {
+export const displayPageWell = (fn, page, expect) => {
 	fn(`The ${page} page is displayed well.`, () => {
 		const text = new RegExp(page, 'i');
 		const item = screen.queryByText(text);
