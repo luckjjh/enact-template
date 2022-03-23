@@ -1,6 +1,8 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 
+import {on, off} from '@enact/core/dispatcher';
+
 import * as domEvents from '../constants/domEvents';
 import * as keyCode from '../constants/keyCode';
 import debugLog from '../libs/log';
@@ -35,7 +37,9 @@ const useScreenOrientationChangeHandler = () => {
 	);
 
 	useEffect(() => {
-		setScreenOrientation(window.webOSSystem.screenOrientation);
+		if (isTVBrowser()) {
+			setScreenOrientation(window.webOSSystem.screenOrientation);
+		}
 	}, [setScreenOrientation]);
 
 	return useCallback(
@@ -166,14 +170,14 @@ export const useDocumentEvent = () => {
 
 		if (isTVBrowser()) {
 			for (const event in events) {
-				document.addEventListener(event, events[event]);
+				on(event, events[event], document);
 			}
 		}
 
 		return () => {
 			if (isTVBrowser()) {
 				for (const event in events) {
-					document.removeEventListener(event, events[event]);
+					off(event, events[event], document);
 				}
 			}
 		};

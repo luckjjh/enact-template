@@ -93,18 +93,18 @@ describe('The app handles document events.', () => {
 	});
 
 	test('The app handles high contrast change event.', async () => {
-		window.webOSSystem.highContrast = 'off';
+		window.webOSSystem.highContrast = 'on';
 		await launch();
 		let root = screen.queryByTestId('root');
-		expect(root).not.toHaveClass('highContrast');
-		window.webOSSystem.highContrast = 'on';
+		expect(root).toHaveClass('highContrast');
+		window.webOSSystem.highContrast = 'off';
 		/* eslint-disable-next-line no-undef */
 		const event = new CustomEvent('webOSHighContrastChange');
 		await act(async () => {
 			await document.dispatchEvent(event);
 		});
 		root = screen.queryByTestId('root');
-		expect(root).toHaveClass('highContrast');
+		expect(root).not.toHaveClass('highContrast');
 	});
 
 	test('The app shows menu when more action button is pushed.', async () => {
