@@ -1,4 +1,3 @@
-import {useState} from 'react';
 import {useSelector} from 'react-redux';
 
 import Cancelable from '@enact/ui/Cancelable';
@@ -12,7 +11,6 @@ import {
 	useCancelHandler,
 	useCloseHandler,
 	useDocumentEvent,
-	useLaunchParams,
 	useSubscriptions
 } from './AppState';
 import {isDevServe} from '../libs/utils';
@@ -44,14 +42,12 @@ const draw = panel => {
 };
 
 const App = props => {
-	const [skinVariants, setSkinVariants] = useState({highContrast: false});
 	const panels = useSelector(state => state.panel.panels);
 	const index = useSelector(state => state.panel.index);
-	const parseLaunchParams = useLaunchParams();
+	const {skinVariants} = useDocumentEvent();
 	const handleBack = useBackHandler();
 	const handleCancel = useCancelHandler();
 	const handleClose = useCloseHandler();
-	useDocumentEvent(setSkinVariants, parseLaunchParams);
 	useSubscriptions();
 
 	return (

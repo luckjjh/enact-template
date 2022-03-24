@@ -25,10 +25,3 @@ export const reload = () => {
 		window.location.replace(`${location}/index.html`);
 	}
 };
-
-export const getAppId = () => {
-	if (isTVBrowser()) {
-		return window.webOSSystem.getIdentifier();
-	}
-	return 'com.webos.app.enact-template';
-};
