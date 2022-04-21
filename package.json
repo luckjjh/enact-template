@@ -24,8 +24,8 @@
 	"private": true,
 	"repository": "",
 	"engines": {
-		"node": ">=16",
-		"npm": ">=7"
+		"node": "<=14",
+		"npm": "<=6"
 	},
 	"enact": {
 		"isomorphic": true,
