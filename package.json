@@ -9,8 +9,10 @@
 		"clean": "enact clean",
 		"format": "prettier --write \"src/**/*.js?(x)\"",
 		"lint": "enact lint src",
+		"lint-staged": "lint-staged",
 		"pack": "enact pack",
 		"pack:p": "npm run pack -- --production",
+		"prepare": "husky install",
 		"serve": "enact serve",
 		"start": "npm run serve",
 		"test": "enact test",
@@ -21,6 +23,10 @@
 	"license": "UNLICENSED",
 	"private": true,
 	"repository": "",
+	"engines": {
+		"node": ">=16",
+		"npm": ">=8"
+	},
 	"enact": {
 		"isomorphic": true,
 		"theme": "sandstone",
@@ -37,37 +43,29 @@
 		]
 	},
 	"dependencies": {
-		"@enact/core": "^4.1.2",
-		"@enact/i18n": "^4.1.2",
-		"@enact/sandstone": "^2.1.2",
-		"@enact/spotlight": "^4.1.2",
-		"@enact/ui": "^4.1.2",
-		"@enact/webos": "^4.1.2",
-		"@reduxjs/toolkit": "^1.7.1",
-		"ilib": "^14.11.1",
+		"@enact/core": "^4.5.0-alpha.1",
+		"@enact/i18n": "^4.5.0-alpha.1",
+		"@enact/sandstone": "^2.5.0-alpha.1",
+		"@enact/spotlight": "^4.5.0-alpha.1",
+		"@enact/ui": "^4.5.0-alpha.1",
+		"@enact/webos": "^4.5.0-alpha.1",
+		"@reduxjs/toolkit": "^1.8.1",
+		"ilib": "^14.14.0",
 		"prop-types": "^15.8.1",
-		"react": "^17.0.2",
-		"react-dom": "^17.0.2",
-		"react-redux": "^7.2.6",
-		"redux": "^4.1.2"
+		"react": "^18.0.0",
+		"react-dom": "^18.0.0",
+		"react-redux": "^8.0.1",
+		"redux": "^4.2.0"
 	},
 	"devDependencies": {
-		"@testing-library/jest-dom": "^5.16.2",
-		"@testing-library/react": "^12.1.2",
-		"eslint-config-enact-proxy": "^1.0.3",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-prettier": "^3.4.1",
-		"husky": "^4.3.8",
+		"eslint-config-enact-proxy": "^1.0.4",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"husky": "^7.0.4",
 		"jest-cucumber": "^3.0.1",
-		"lint-staged": "^12.1.7",
-		"prettier": "^2.5.1",
-		"redux-logger": "^3.0.6",
-		"typescript": "^4.5.5"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "npm run build && npm run test:all && lint-staged"
-		}
+		"lint-staged": "^12.4.0",
+		"prettier": "^2.6.2",
+		"redux-logger": "^3.0.6"
 	},
 	"lint-staged": {
 		"src/**/*.js": [
