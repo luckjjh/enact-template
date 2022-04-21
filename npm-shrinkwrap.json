@@ -32,6 +32,9 @@
 				"lint-staged": "^12.4.0",
 				"prettier": "^2.6.2",
 				"redux-logger": "^3.0.6"
+			},
+			"engines": {
+				"npm": ">=7"
 			}
 		},
 		"node_modules/@ampproject/remapping": {
@@ -2450,9 +2453,9 @@
 			"dev": true
 		},
 		"node_modules/electron-to-chromium": {
-			"version": "1.4.115",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.115.tgz",
-			"integrity": "sha512-yy1W7cTcreskCWSRTtvp8CNLEci3uYBn5s1U4IytDz7v485iLVPh4QwFuSCavsFbxRLVvwnHNXEFIDShrk/UnQ==",
+			"version": "1.4.116",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.116.tgz",
+			"integrity": "sha512-sy2ol5DTH0sy8xvAglyHFxsNFXFsOBfa6rGmrtjiSdQOp53ossspduOzU+5Lx23H7GxEjjvtSF36XqkajV6Z5A==",
 			"dev": true
 		},
 		"node_modules/emittery": {
@@ -9802,9 +9805,9 @@
 			"dev": true
 		},
 		"electron-to-chromium": {
-			"version": "1.4.115",
-			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.115.tgz",
-			"integrity": "sha512-yy1W7cTcreskCWSRTtvp8CNLEci3uYBn5s1U4IytDz7v485iLVPh4QwFuSCavsFbxRLVvwnHNXEFIDShrk/UnQ==",
+			"version": "1.4.116",
+			"resolved": "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.116.tgz",
+			"integrity": "sha512-sy2ol5DTH0sy8xvAglyHFxsNFXFsOBfa6rGmrtjiSdQOp53ossspduOzU+5Lx23H7GxEjjvtSF36XqkajV6Z5A==",
 			"dev": true
 		},
 		"emittery": {

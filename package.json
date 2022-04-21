@@ -24,15 +24,11 @@
 	"private": true,
 	"repository": "",
 	"engines": {
-		"node": ">=16",
-		"npm": ">=8"
+		"npm": ">=7"
 	},
 	"enact": {
 		"isomorphic": true,
-		"theme": "sandstone",
-		"deep": [
-			"(window.webOSSystem && window.webOSSystem.highContrast === 'on')"
-		]
+		"theme": "sandstone"
 	},
 	"jest": {
 		"collectCoverageFrom": [
