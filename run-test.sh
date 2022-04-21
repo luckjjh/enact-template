@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "[Enact] Intall Enact CLI v4"
-npm install @enact/cli@4
+echo "[Enact] Intall Enact CLI v5"
+npm install @enact/cli@5.0.0-alpha.1
 if [ $? -eq 0 ]; then
 	echo "[Enact] npm install"
 	npm install

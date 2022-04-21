@@ -8,7 +8,7 @@
 		"build": "npm run pack -- --production --isomorphic --snapshot --locales=tv",
 		"clean": "enact clean",
 		"format": "prettier --write \"src/**/*.js?(x)\"",
-		"lint": "enact lint src",
+		"lint": "enact lint --strict src/",
 		"lint-staged": "lint-staged",
 		"pack": "enact pack",
 		"pack:p": "npm run pack -- --production",
@@ -24,6 +24,7 @@
 	"private": true,
 	"repository": "",
 	"engines": {
+		"node": ">=16",
 		"npm": ">=7"
 	},
 	"enact": {
