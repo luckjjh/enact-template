@@ -1,7 +1,6 @@
 {
-	"extends": ["enact-proxy/strict", "plugin:prettier/recommended"],
-	"plugins": ["prettier"],
+	"extends": ["enact-proxy/strict"],
 	"rules": {
-		"prettier/prettier": "error"
+		"indent": "off"
 	}
 }
