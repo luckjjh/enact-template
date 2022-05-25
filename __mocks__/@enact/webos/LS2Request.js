@@ -37,7 +37,7 @@ const getHash = ({service, category, method}, params) => {
 const methods = ['launch'];
 
 class LS2Request {
-	send({
+	send = ({
 		service = '',
 		method = '',
 		onSuccess = () => {},
@@ -45,7 +45,7 @@ class LS2Request {
 		onComplete = () => {},
 		parameters = {},
 		subscribe = false
-	}) {
+	}) => {
 		let params = {...parameters};
 		const fullUri = `${adjustPath(service)}${method}`;
 		const parsedUri = parseLS2Uri(fullUri);
@@ -72,8 +72,9 @@ class LS2Request {
 			onComplete(err);
 		}
 		return this;
-	}
-	cancel() {}
+	};
+
+	cancel = () => {};
 }
 
 export default LS2Request;

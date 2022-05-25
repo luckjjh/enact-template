@@ -7,9 +7,8 @@
 	"scripts": {
 		"build": "npm run pack -- --production --isomorphic --snapshot --locales=tv",
 		"clean": "enact clean",
-		"format": "prettier --write \"src/**/*.js?(x)\"",
-		"lint": "enact lint --strict src/",
-		"lint-staged": "lint-staged",
+		"format": "prettier --write \"**/*.js?(x)\"",
+		"lint": "enact lint --strict",
 		"pack": "enact pack",
 		"pack:p": "npm run pack -- --production",
 		"serve": "enact serve",
@@ -55,8 +54,6 @@
 	},
 	"devDependencies": {
 		"eslint-config-enact-proxy": "^1.0.4",
-		"eslint-config-prettier": "^8.5.0",
-		"eslint-plugin-prettier": "^4.0.0",
 		"husky": "^4.3.8",
 		"jest-cucumber": "^3.0.1",
 		"lint-staged": "^12.4.0",
@@ -70,7 +67,7 @@
 	},
 	"lint-staged": {
 		"src/**/*.js": [
-			"npm run lint -- --fix"
+			"npm run lint"
 		]
 	}
 }
