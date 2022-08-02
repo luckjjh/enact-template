@@ -16,7 +16,7 @@ import {
 import {isDevServe} from '../libs/utils';
 
 /* istanbul ignore next*/
-if (isDevServe()) {
+if (process.env.NODE_ENV === 'development' && isDevServe()) {
 	window.webOSSystem = {
 		highContrast: 'off',
 		close: () => {},
