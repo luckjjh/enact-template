@@ -14,6 +14,7 @@ import {
 	setLaunchParams
 } from '../reducers/general';
 import {popPanel} from '../reducers/panel';
+import {useMemo} from 'react';
 
 const useVisibleChangeHandler = () => {
 	const dispatch = useDispatch();
@@ -78,16 +79,18 @@ const useKeyUpHandler = () => {
 };
 
 const useHighContrastChangeHandler = () => {
-	const [skinVariants, setSkinVariants] = useState({highContrast: false});
+	const [highContrast, setHighContrast] = useState(false);
 
 	const handleHighContrastChange = useCallback(() => {
 		if (isTVBrowser()) {
 			debugLog('HIGH_CONTRAST_CHANGE', {});
-			setSkinVariants({
-				highContrast: window.webOSSystem.highContrast === 'on'
-			});
+			setHighContrast(window.webOSSystem.highContrast === 'on');
 		}
 	}, []);
+
+	const skinVariants = useMemo(() => {
+		return {highContrast};
+	}, [highContrast]);
 
 	useEffect(() => {
 		handleHighContrastChange();

@@ -44,7 +44,7 @@ const draw = panel => {
 const App = props => {
 	const panels = useSelector(state => state.panel.panels);
 	const index = useSelector(state => state.panel.index);
-	const {skinVariants} = useDocumentEvent();
+	const values = useDocumentEvent();
 	const handleBack = useBackHandler();
 	const handleCancel = useCancelHandler();
 	const handleClose = useCloseHandler();
@@ -53,8 +53,8 @@ const App = props => {
 	return (
 		<CancelablePanels
 			{...props}
+			{...values}
 			noAnimation={process.env.NODE_ENV === 'test'}
-			skinVariants={skinVariants}
 			data-testid="root"
 			index={index}
 			onBack={handleBack}
