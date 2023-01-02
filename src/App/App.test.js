@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import {defineFeature, loadFeature} from 'jest-cucumber';
 import {act, fireEvent, screen, waitFor} from '@testing-library/react';
 
+import * as services from '../libs/services';
 import debugLog from '../libs/log';
 import launch, {launchApp, pushBackButton} from '../libs/testutils';
 
@@ -116,17 +117,14 @@ describe('The app handles document events.', () => {
 	});
 
 	test('The app handles screen orientation change.', async () => {
+		const spy = jest
+			.spyOn(services, 'getOrientationInfo')
+			.mockImplementation(({onSuccess}) =>
+				onSuccess({orientation: 'portrait'})
+			);
 		await launch();
-		/* eslint-disable-next-line no-undef */
-		const event = new CustomEvent('screenOrientationChange', {
-			detail: {
-				screenOrientation: 'portrait'
-			}
-		});
-		await act(async () => {
-			await document.dispatchEvent(event);
-		});
 		expect(window.webOSSystem.setWindowOrientation).toBeCalledWith('portrait');
+		spy.mockRestore();
 	});
 
 	test('The app handles visibility change.', async () => {

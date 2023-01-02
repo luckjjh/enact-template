@@ -15,6 +15,7 @@ import {
 } from '../reducers/general';
 import {popPanel} from '../reducers/panel';
 import {useMemo} from 'react';
+import {useOrientationInfo} from '../hooks/msc';
 
 const useVisibleChangeHandler = () => {
 	const dispatch = useDispatch();
@@ -24,31 +25,6 @@ const useVisibleChangeHandler = () => {
 		debugLog('VISIBILITY_CHANGE', {hidden});
 		dispatch(setForeground(!hidden));
 	}, [dispatch]);
-};
-
-const useScreenOrientationChangeHandler = () => {
-	const setScreenOrientation = useCallback(
-		(screenOrientation = 'landscape') => {
-			if (isTVBrowser()) {
-				debugLog('ORIENTATION_CHANGE', {screenOrientation});
-				window.webOSSystem.setWindowOrientation(screenOrientation);
-			}
-		},
-		[]
-	);
-
-	useEffect(() => {
-		if (isTVBrowser()) {
-			setScreenOrientation(window.webOSSystem.screenOrientation);
-		}
-	}, [setScreenOrientation]);
-
-	return useCallback(
-		e => {
-			setScreenOrientation(e.detail.screenOrientation);
-		},
-		[setScreenOrientation]
-	);
 };
 
 const useRelaunchHandler = parseLaunchParams => {
@@ -154,7 +130,6 @@ export const useCloseHandler = () => {
 export const useDocumentEvent = () => {
 	const parseLaunchParams = useLaunchParams();
 	const handleKeyup = useKeyUpHandler();
-	const handleScreenOrientationChange = useScreenOrientationChangeHandler();
 	const handleVisibilitychange = useVisibleChangeHandler();
 	const handleLocaleChange = useLocaleChangeHandler();
 	const [skinVariants, handleHighContrastChange] =
@@ -164,7 +139,6 @@ export const useDocumentEvent = () => {
 	useEffect(() => {
 		const events = {
 			[domEvents.KEY_UP]: handleKeyup,
-			[domEvents.SCREEN_ORIENTATION_CHANGE]: handleScreenOrientationChange,
 			[domEvents.VISIBILITY_CHANGE]: handleVisibilitychange,
 			[domEvents.WEBOS_HIGH_CONTRAST_CHANGE]: handleHighContrastChange,
 			[domEvents.WEBOS_LOCALE_CHANGE]: handleLocaleChange,
@@ -186,7 +160,6 @@ export const useDocumentEvent = () => {
 		};
 	}, [
 		handleKeyup,
-		handleScreenOrientationChange,
 		handleVisibilitychange,
 		handleHighContrastChange,
 		handleLocaleChange,
@@ -199,4 +172,5 @@ export const useDocumentEvent = () => {
 // Add functions to subscribe luna APIs for general usage here
 export const useSubscriptions = () => {
 	useConfigs();
+	useOrientationInfo();
 };
